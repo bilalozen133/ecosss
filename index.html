@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecrin'e...</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; color: white;
+            font-family: 'Georgia', serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; text-align: center;
+        }
+
+        /* Sabit Spot Işığı */
+        #bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,0,0,1) 75%);
+            z-index: 1;
+        }
+
+        #intro-btn {
+            position: relative; z-index: 100;
+            padding: 15px 35px; background: none; border: 1px solid #fff;
+            color: #fff; cursor: pointer; font-size: 18px; letter-spacing: 2px;
+            border-radius: 5px;
+        }
+
+        #story-container {
+            display: none; width: 90%; z-index: 10;
+        }
+
+        .scene {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            font-size: 20px; /* Mobilde rahat okunsun diye ideal boy */
+            line-height: 1.6;
+            text-shadow: 0 0 15px rgba(255,255,255,0.4);
+        }
+
+        .active { opacity: 1; }
+
+        #final-stage {
+            display: none; flex-direction: column; align-items: center;
+            z-index: 100; animation: fadeIn 4s forwards;
+            width: 90%;
+        }
+
+        #final-photo {
+            width: 100%; max-width: 280px; border: 2px solid #fff; border-radius: 15px;
+            box-shadow: 0 0 40px rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .note-main { font-style: italic; color: #ddd; font-size: 18px; margin-bottom: 10px; }
+        .note-romantic { color: #ffb6c1; font-weight: bold; font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="bg-overlay"></div>
+
+    <audio id="bg-music" loop>
+        <source src="muzik.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="intro-btn" onclick="startStory()">Senin için...</button>
+
+    <div id="story-container">
+        <div class="scene">Tanıştığımız ilk gün...</div>
+        <div class="scene">Sıradan bir gün gibi başlamıştı ama...</div>
+        <div class="scene">Sende farklı bir şeyler vardı.</div>
+        <div class="scene">Bakışların, kelimelerin... Sen herkes değildin.</div>
+        <div class="scene">Zamanla hayatımın merkezi oldun.</div>
+        <div class="scene">Sonra... Beklemediğim bir şey oldu.</div>
+        <div class="scene">Konuşmayı kestik.</div>
+        <div class="scene">Sessizlik her yeri kapladı, dünyam karardı.</div>
+        <div class="scene">Sanki kalbimde bir şeyler eksik kalmıştı.</div>
+        <div class="scene">Ama kader bizi yine karşılaştırdı.</div>
+        <div class="scene">Sonra yine konuştuk, yine güldük.</div>
+        <div class="scene">İçimdeki duyguları daha fazla saklayamadım.</div>
+        <div class="scene">Sana açıldım...</div>
+        <div class="scene">Red yedim.</div>
+        <div class="scene">Karanlık dünyam daha da karanlık oldu.</div>
+        <div class="scene">Canım yandı ama bir şeyi fark ettim...</div>
+        <div class="scene">Seni sevmekten vazgeçmek elimde değildi.</div>
+        <div class="scene">Pes etmedim, sadece bekledim.</div>
+        <div class="scene">Bu kadarı yeterli, daha fazla söze gerek yok aslında.</div>
+        <div class="scene" style="color: #ffb6c1;">Hep bu kalp seni sevecek. ❤️</div>
+        <div class="scene" style="font-size: 26px; font-weight: bold;">Seni seviyorum Ecrin.</div>
+    </div>
+
+    <div id="final-stage">
+        <img id="final-photo" src="ecrin.png" alt="Ecrin">
+        <div class="note-main">"Ne arayan var, ne soran var senden sonra beni."</div>
+        <div class="note-romantic">"Dünya dursa, zaman tükense bile... Sol yanım her zaman seninle kalacak."</div>
+    </div>
+
+    <script>
+        const scenes = document.querySelectorAll('.scene');
+        const audio = document.getElementById('bg-music');
+        let currentScene = 0;
+
+        function startStory() {
+            document.getElementById('intro-btn').style.display = 'none';
+            document.getElementById('story-container').style.display = 'block';
+            audio.play().catch(e => console.log("Müzik başlatılamadı:", e));
+            showNextScene();
+        }
+
+        function showNextScene() {
+            if (currentScene < scenes.length) {
+                if (currentScene > 0) {
+                    scenes[currentScene - 1].classList.remove('active');
+                }
+
+                scenes[currentScene].classList.add('active');
+                
+                setTimeout(() => {
+                    currentScene++;
+                    showNextScene();
+                }, 3800); // 3.8 saniye bekleme süresi
+            } else {
+                scenes[scenes.length - 1].classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('story-container').style.display = 'none';
+                    document.getElementById('final-stage').style.display = 'flex';
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
